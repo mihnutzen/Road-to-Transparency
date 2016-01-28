@@ -1,0 +1,71 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>Road to Transparency - A Front-End Tutorial</title>
+    <meta name="description" content="Road to Transparency">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body>
+
+    <div class="container">
+      <h1 class="title"><a href="/">Adding transparency to JPGs</a></h1>
+      <p class="subtitle">Canvas + Composite Operation</p>
+
+      <div class="body">
+        <div class="col-2">
+          <img src="images/mini/mini-bg-img.jpg" />
+          <img src="images/mini/mini-mask-empty.png" />
+        </div>
+
+        <div class="col-1">
+          <img id="test-composite" src="images/mini/mini-bg-img.jpg" data-mask="images/mini/mini-mask-empty.png" />
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(() => {
+          var $img = $('#test-composite');
+          compositeOperation($img);
+      });
+
+      function compositeOperation($img, type) {
+          var imgW = $img.get(0).width,
+              imgH = $img.get(0).height,
+              $canvasImg = $('<canvas>'),
+              ctxImg = $canvasImg.get(0).getContext('2d'),
+              maskPath = $img.data('mask');
+
+          // setup dimensions
+          $canvasImg.get(0).width = imgW;
+          $canvasImg.get(0).height = imgH;
+
+          // create image for mask
+          var mask = new Image();
+          mask.src = maskPath;
+          mask.onload = function(){
+              // start transparentize
+              applyComposite();
+
+              // replace Img source
+              $img.get(0).src = $canvasImg.get(0).toDataURL();
+          };
+
+          function applyComposite() {
+              // canvas layers composition type
+              // (how canvas layers affect each other)
+              ctxImg.globalCompositeOperation = "xor";
+
+              // draw images
+              ctxImg.drawImage(mask, 0, 0, imgW, imgH);
+              ctxImg.drawImage($img[0], 0, 0, imgW, imgH);
+          }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>Road to Transparency - A Front-End Tutorial</title>
+    <meta name="description" content="Road to Transparency">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body>
+
+    <svg width="0" height="0" class="svg-sprite">
+      <defs>
+        <mask id="miniMask">
+          <image width="450" height="270" xlink:href="images/mini/mini-mask.jpg"></image>
+        </mask>
+      </defs>
+    </svg>
+
+    <div class="container">
+      <h1 class="title"><a href="/">Adding transparency to JPGs</a></h1>
+      <p class="subtitle">SVG Image + JPG Mask</p>
+
+      <div class="body">
+        <div class="col-2">
+          <img src="images/mini/mini-bg-img.jpg" />
+          <img src="images/mini/mini-mask.jpg" />
+        </div>
+
+        <div class="col-1">
+          <svg viewBox="0 0 450 270">
+            <image width="450" height="270" xlink:href="images/mini/mini-bg-black.jpg" mask="url(#miniMask)"></image>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

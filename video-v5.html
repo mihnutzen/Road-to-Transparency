@@ -1,0 +1,40 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>Road to Transparency - A Front-End Tutorial</title>
+    <meta name="description" content="Road to Transparency">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body class="vid-page">
+
+    <svg width="0" height="0" class="svg-sprite">
+        <defs>
+          <mask id="mask">
+            <image width="640" height="9000" x="0" xlink:href="images/sprite/parcel-mask-1.jpg"></image>
+          </mask>
+        </defs>
+    </svg>
+
+    <div class="container">
+      <h1 class="title"><a href="/">Adding transparency to Video</a></h1>
+      <p class="subtitle">SVG + JPG Mask + CSS Animation</p>
+
+      <div class="body">
+        <div class="col-2 input-cnt">
+          <img src="images/sprite/parcel-holly-1.jpg" />
+          <img src="images/sprite/parcel-mask-1.jpg" />
+        </div>
+
+        <div class="col-1 move-anim">
+          <svg viewBox="0 0 640 9000">
+            <image mask="url(#mask)" width="640" height="9000" y="0px" xlink:href="images/sprite/parcel-holly-1.jpg"></image>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

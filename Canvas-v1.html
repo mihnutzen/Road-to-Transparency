@@ -1,0 +1,81 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>Road to Transparency - A Front-End Tutorial</title>
+    <meta name="description" content="Road to Transparency">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body>
+
+    <div class="container">
+      <h1 class="title"><a href="/">Adding transparency to JPGs</a></h1>
+      <p class="subtitle">Canvas + Alpha Channel</p>
+
+      <div class="body">
+        <div class="col-2">
+          <img src="images/mini/mini-bg-img.jpg" />
+          <img src="images/mini/mini-mask.jpg" />
+        </div>
+
+        <div class="col-1">
+          <img id="test-alpha" src="images/mini/mini-bg-img.jpg" data-mask="images/mini/mini-mask.jpg" />
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(() => {
+          var $img = $('#test-alpha');
+          alphaTransparency($img);
+      });
+
+      function alphaTransparency($img, type) {
+          var imgW = $img.get(0).width,
+              imgH = $img.get(0).height,
+              $canvasImg = $('<canvas>'),
+              $canvasMask = $('<canvas>'),
+              ctxImg = $canvasImg.get(0).getContext('2d'),
+              ctxMask = $canvasMask.get(0).getContext('2d'),
+              maskPath = $img.data('mask');
+
+          // setup dimensions
+          $canvasImg.get(0).width = $canvasMask.get(0).width = imgW;
+          $canvasImg.get(0).height = $canvasMask.get(0).height = imgH;
+
+          // create image for mask
+          var mask = new Image();
+          mask.src = maskPath;
+          mask.onload = function(){
+              // draw images
+              ctxImg.drawImage($img.get(0), 0, 0, imgW, imgH);
+              ctxMask.drawImage(mask, 0, 0, imgW, imgH);
+
+              // start transparentize
+              applyAlpha();
+
+              // replace Img source
+              $img.get(0).src = $canvasImg.get(0).toDataURL();
+          };
+
+          function applyAlpha() {
+              // get image pixels (RGB + A)
+              var imgData = ctxImg.getImageData(0, 0, imgW, imgH);
+              var maskData = ctxMask.getImageData(0, 0, imgW, imgH);
+
+              // replace alpha channel value
+              for (var i = 3, len = imgData.data.length; i < len; i = i + 4) {
+                  imgData.data[i] = maskData.data[i-1];
+              }
+
+              // draw img on canvas
+              ctxImg.putImageData(imgData, 0, 0, 0, 0, imgW, imgH);
+          }
+      }
+    </script>
+  </body>
+</html>

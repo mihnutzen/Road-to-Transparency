@@ -1,0 +1,99 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>Road to Transparency - A Front-End Tutorial</title>
+    <meta name="description" content="Road to Transparency">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body class="vid-page">
+
+    <div class="container">
+      <h1 class="title"><a href="/">Adding transparency to Video</a></h1>
+      <p class="subtitle">Canvas + Composite Operation + Image sequence on Canvas</p>
+
+      <div class="body">
+        <div class="col-1 input-cnt">
+          <img id="imgVid" src="images/sprite/parcel-holly-1.jpg" data-mask="images/sprite/parcel-mask-1.png" />
+          <img src="images/sprite/parcel-mask-1.png" />
+        </div>
+
+        <div class="col-1 output-cnt">
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+          var $imgSprite = $('#imgVid');
+          $imgSprite.get(0).onload = transparentizeSprite($imgSprite);
+      });
+
+      function transparentizeSprite($sprite) {
+          var framesNr = 25;
+
+          var $cvsVid = $('<canvas>'),
+              $cvsSprite = $('<canvas>'),
+              ctxVid = $cvsVid[0].getContext('2d'),
+              ctxSprite = $cvsSprite[0].getContext('2d'),
+              vidW = $sprite.get(0).width,
+              vidH = $sprite.get(0).height,
+              vidH = $sprite.get(0).height,
+              vidFrames = [],
+              maskPath = $sprite.data('mask');
+
+          $('.output-cnt').append($cvsVid);
+
+          setupDimensions();
+
+          // create image for mask
+          var mask = new Image();
+          mask.src = maskPath;
+          mask.onload = function(){
+
+              composite();
+              saveFrames();
+
+          };
+
+          function setupDimensions() {
+              $cvsVid[0].width = $cvsSprite[0].width = vidW;
+              $cvsVid[0].height = vidH / framesNr;
+              $cvsSprite[0].height = vidH;
+          }
+
+          function composite() {
+              // apply transparency through composite operation
+              ctxSprite.globalCompositeOperation = "xor";
+              ctxSprite.drawImage(mask, 0, 0, vidW, vidH);
+              ctxSprite.drawImage($sprite[0], 0, 0, vidW, vidH);
+          }
+
+          function saveFrames() {
+              // save transparent frame
+              for (var i = 0; i < framesNr; i++) {
+                  vidFrames.push(ctxSprite.getImageData(0, i * vidH / framesNr, vidW, vidH / framesNr));
+              }
+              playFrames(0);
+          }
+
+          function playFrames(nr) {
+              // paint frame
+              ctxVid.putImageData(vidFrames[nr], 0, 0, 0, 0, vidW, vidH);
+
+              // reset loop
+              nr < 24 ? nr++ : nr = 0;
+
+              // play next frame
+              setTimeout(function () {
+                  playFrames(nr);
+              }, 40);
+          }
+      }
+    </script>
+  </body>
+</html>

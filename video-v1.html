@@ -1,0 +1,88 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>Road to Transparency - A Front-End Tutorial</title>
+    <meta name="description" content="Road to Transparency">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body class="vid-page">
+
+    <div class="container">
+      <h1 class="title"><a href="/">Adding transparency to Video</a></h1>
+      <p class="subtitle">Canvas + Video with Alpha</p>
+
+      <div class="body">
+        <div class="col-1 input-cnt">
+          <video id="video" autoplay loop>
+            <source src="video/test.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <div class="col-1 output-cnt">
+        </div>
+      </div>
+
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(() => {
+          var $vid = $('#video');
+          transparentizeVid($vid);
+      });
+
+      function transparentizeVid($vid) {
+
+          var $canvasIn = $('<canvas>'),
+              $canvasOut = $('<canvas>'),
+              ctxIn = $canvasIn.get(0).getContext('2d'),
+              ctxOut = $canvasOut.get(0).getContext('2d'),
+              interval,
+              vidW,
+              vidH;
+
+          // inset canvas in HTML
+          $('.output-cnt').append($canvasOut);
+
+          $vid.get(0).addEventListener('loadedmetadata', function() {
+              console.log('-- video loaded --');
+              // setup dimensions
+              vidW = this.videoWidth;
+              vidH = this.videoHeight;
+
+              $canvasIn.get(0).width = $canvasOut.get(0).width = vidW;
+              $canvasIn.get(0).height = vidH;
+              $canvasOut.get(0).height = vidH / 2;
+          });
+
+          $vid.get(0).addEventListener('play', function() {
+              clearInterval(interval);
+              interval = setInterval(transparentizeFrame, 40);
+          }, false);
+
+          function transparentizeFrame() {
+              // draw current video frame on canvas
+              ctxIn.drawImage($vid.get(0), 0, 0);
+
+              // get image pixels . we use 2 sets: actual image & mask
+              var image = ctxIn.getImageData(0, 0, vidW, vidH / 2),
+                  imageData = image.data,
+                  alphaData = ctxIn.getImageData(0, vidH / 2, vidW, vidH / 2).data;
+
+              // replace transparent pixels between parts
+              for (var i = 3, len = imageData.length; i < len; i = i + 4) {
+                  imageData[i] = alphaData[i - 1];
+              }
+
+              // draw resulting image on canvas
+              ctxOut.putImageData(image, 0, 0, 0, 0, vidW, vidH / 2);
+          }
+      }
+    </script>
+  </body>
+</html>

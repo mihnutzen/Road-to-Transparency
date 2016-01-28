@@ -1,0 +1,107 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>Road to Transparency - A Front-End Tutorial</title>
+    <meta name="description" content="Road to Transparency">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body class="vid-page">
+
+    <div class="container">
+      <h1 class="title"><a href="/">Adding transparency to Video</a></h1>
+      <p class="subtitle">Canvas + Alpha Channel + Image sequence on Canvas</p>
+
+      <div class="body">
+        <div class="col-1 input-cnt">
+          <img id="imgVid" src="images/sprite/parcel-holly-1.jpg" data-mask="images/sprite/parcel-mask-1.jpg" />
+          <img src="images/sprite/parcel-mask-1.jpg" />
+        </div>
+
+        <div class="col-1 output-cnt">
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+          var $imgSprite = $('#imgVid');
+          $imgSprite.get(0).onload = transparentizeSpriteV2($imgSprite);
+      });
+
+      function transparentizeSpriteV2($sprite) {
+          var framesNr = 25;
+
+          var $imgCvs = $('<canvas>'),
+              $maskCvs = $('<canvas>'),
+              $vidCvs = $('<canvas>'),
+              ctxImg = $imgCvs.get(0).getContext('2d'),
+              ctxMask = $maskCvs.get(0).getContext('2d'),
+              ctxVid = $vidCvs.get(0).getContext('2d'),
+              vidW = $sprite.get(0).width,
+              vidH = $sprite.get(0).height,
+              vidFrames = [],
+              maskPath = $sprite.data('mask');
+
+          $('.output-cnt').append($vidCvs);
+
+          setupDimensions();
+
+          // create image for mask
+          var mask = new Image();
+          mask.src = maskPath;
+          mask.onload = function(){
+              alpha();
+              saveFrames();
+          };
+
+          function setupDimensions() {
+              $imgCvs.get(0).width = $maskCvs.get(0).width = $vidCvs.get(0).width = vidW;
+              $imgCvs.get(0).height = $maskCvs.get(0).height = vidH;
+              $vidCvs[0].height = vidH / framesNr;
+          }
+
+          function alpha() {
+              ctxImg.drawImage($sprite.get(0), 0, 0, vidW, vidH);
+              ctxMask.drawImage(mask, 0, 0, vidW, vidH);
+
+              var imgData = ctxImg.getImageData(0, 0, vidW, vidH);
+              var maskData = ctxMask.getImageData(0, 0, vidW, vidH);
+
+              // replace alpha channel value
+              for (var i = 3, len = imgData.data.length; i < len; i = i + 4) {
+                  imgData.data[i] = maskData.data[i-1];
+              }
+
+              // draw img on canvas
+              ctxImg.putImageData(imgData, 0, 0, 0, 0, vidW, vidH);
+          }
+
+          function saveFrames() {
+              // save transparent frame
+              for (var i = 0; i < framesNr; i++) {
+                  vidFrames.push(ctxImg.getImageData(0, i * vidH / framesNr, vidW, vidH / framesNr));
+              }
+              playFrames(0);
+          }
+
+          function playFrames(nr) {
+              // paint frame
+              ctxVid.putImageData(vidFrames[nr], 0, 0, 0, 0, vidW, vidH);
+
+              // reset loop
+              nr < 24 ? nr++ : nr = 0;
+
+              // play next frame
+              setTimeout(function () {
+                  playFrames(nr);
+              }, 40);
+          }
+      }
+    </script>
+  </body>
+</html>

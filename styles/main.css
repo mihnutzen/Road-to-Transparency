@@ -1,0 +1,207 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+
+html,
+body {
+  min-height: 100%;
+}
+
+
+
+body {
+  font-family: 'Raleway', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #FFF;
+  text-shadow: 2px 2px 15px rgba(0,0,0,1);
+  text-align: center;
+
+  background-color: hsl(34, 53%, 82%);
+  background-image:
+    repeating-linear-gradient(45deg, transparent 5px, hsla(197, 62%, 11%, 0.5) 5px, hsla(197, 62%, 11%, 0.5) 10px,
+    hsla(5, 53%, 63%, 0) 10px, hsla(5, 53%, 63%, 0) 35px, hsla(5, 53%, 63%, 0.5) 35px, hsla(5, 53%, 63%, 0.5) 40px,
+    hsla(197, 62%, 11%, 0.5) 40px, hsla(197, 62%, 11%, 0.5) 50px, hsla(197, 62%, 11%, 0) 50px, hsla(197, 62%, 11%, 0) 60px,
+    hsla(5, 53%, 63%, 0.5) 60px, hsla(5, 53%, 63%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 80px,
+    hsla(35, 91%, 65%, 0) 80px, hsla(35, 91%, 65%, 0) 90px, hsla(5, 53%, 63%, 0.5) 90px, hsla(5, 53%, 63%, 0.5) 110px,
+    hsla(5, 53%, 63%, 0) 110px, hsla(5, 53%, 63%, 0) 120px, hsla(197, 62%, 11%, 0.5) 120px, hsla(197, 62%, 11%, 0.5) 140px
+    ),
+    repeating-linear-gradient(135deg, transparent 5px, hsla(197, 62%, 11%, 0.5) 5px, hsla(197, 62%, 11%, 0.5) 10px,
+    hsla(5, 53%, 63%, 0) 10px, hsla(5, 53%, 63%, 0) 35px, hsla(5, 53%, 63%, 0.5) 35px, hsla(5, 53%, 63%, 0.5) 40px,
+    hsla(197, 62%, 11%, 0.5) 40px, hsla(197, 62%, 11%, 0.5) 50px, hsla(197, 62%, 11%, 0) 50px, hsla(197, 62%, 11%, 0) 60px,
+    hsla(5, 53%, 63%, 0.5) 60px, hsla(5, 53%, 63%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 80px,
+    hsla(35, 91%, 65%, 0) 80px, hsla(35, 91%, 65%, 0) 90px, hsla(5, 53%, 63%, 0.5) 90px, hsla(5, 53%, 63%, 0.5) 110px,
+    hsla(5, 53%, 63%, 0) 110px, hsla(5, 53%, 63%, 0) 140px, hsla(197, 62%, 11%, 0.5) 140px, hsla(197, 62%, 11%, 0.5) 160px
+  );
+}
+
+.vid-page {
+  background: hsl(34, 53%, 82%);
+}
+
+/* HIDE SPRITE */
+.svg-sprite {
+  width: 0;
+  height: 0;
+  display: block;
+}
+
+
+
+/* GRID SETUP */
+.col-1,
+.col-2,
+.col-4  {
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 60px;
+}
+
+.col-1 > * {
+  width: 100%;
+  display: block;
+}
+
+.col-2 > * {
+  float: left;
+  width: 50%;
+}
+
+.col-4 > * {
+  float: left;
+  width: 25%;
+}
+
+
+
+.title {
+  margin-bottom: 24px;
+  padding-top: 60px;
+  font-size: 54px;
+}
+
+.title a {
+  color: #FFF;
+  text-decoration: none;
+}
+
+
+.subtitle {
+  margin-bottom: 60px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+
+.body {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+
+.input-cnt {
+  position: relative;;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+
+
+.vid-output {
+  position: relative;
+  width: 100%;
+  min-height: 360px;
+}
+
+.vid-output canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: none;
+}
+
+.vid-output canvas.selected {
+  display: block;
+}
+
+
+
+.move-anim {
+  z-index: 1111;
+  width: 640px;
+  height: 360px;
+
+  overflow: hidden;
+}
+
+.move-anim svg {
+  display: block;
+  width: 640px;
+  height: 9000px;
+  animation: move 1s steps(25, end) infinite;
+}
+
+@keyframes move {
+  to {
+    transform: translateY(-9000px);
+  }
+}
+
+
+
